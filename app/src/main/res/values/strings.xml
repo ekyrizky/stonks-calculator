@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StonksCalculator</string>
+    <string name="app_logo">Stonks Calculator Logo</string>
 </resources>
