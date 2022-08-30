@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">StonksCalculator</string>
     <string name="app_logo">Stonks Calculator Logo</string>
+    <string name="number_of_shares">Number of Shares</string>
+    <string name="buy_price">Buy Price</string>
+    <string name="sell_price">Sell Price</string>
+    <string name="buy_commission">Buy Commission</string>
+    <string name="sell_commission">Sell Commission</string>
+    <string name="calculate">Calculate</string>
+    <string name="reset">Reset</string>
 </resources>
