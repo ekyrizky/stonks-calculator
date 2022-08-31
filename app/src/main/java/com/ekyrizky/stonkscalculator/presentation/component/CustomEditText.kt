@@ -27,6 +27,7 @@ fun CustomEditText(
     modifier: Modifier,
     keyboardOptions: KeyboardOptions = remember { KeyboardOptions.Default },
     onImeKeyAction: () -> Unit,
+    trailingIcons: @Composable (() -> Unit)? = null,
 ) {
     val fieldValue = remember { mutableStateOf(inputWrapper.value) }
     OutlinedTextField(
@@ -40,6 +41,7 @@ fun CustomEditText(
                 fontWeight = FontWeight.SemiBold
             )
         },
+        trailingIcon = trailingIcons,
         isError = inputWrapper.errorId != null,
         keyboardOptions = keyboardOptions,
         keyboardActions = remember { KeyboardActions(onAny = { onImeKeyAction() }) },
@@ -59,6 +61,4 @@ fun CustomEditText(
             style = MaterialTheme.typography.caption,
         )
     }
-
-    Spacer(modifier = Modifier.height(16.dp))
 }
