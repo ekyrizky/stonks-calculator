@@ -1,4 +1,4 @@
-package com.ekyrizky.stonkscalculator.ui.theme
+package com.ekyrizky.stonkscalculator.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
