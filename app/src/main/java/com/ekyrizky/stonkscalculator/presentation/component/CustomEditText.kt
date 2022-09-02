@@ -1,8 +1,6 @@
 package com.ekyrizky.stonkscalculator.presentation.component
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,12 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ekyrizky.stonkscalculator.common.InputValidator
 import com.ekyrizky.stonkscalculator.data.wrapper.InputWrapper
 
 @Composable
 fun CustomEditText(
     @StringRes labelResId: Int,
     inputWrapper: InputWrapper,
+    onValueChange: (value: String) -> Unit,
     modifier: Modifier,
     keyboardOptions: KeyboardOptions = remember { KeyboardOptions.Default },
     onImeKeyAction: () -> Unit,
@@ -32,7 +32,11 @@ fun CustomEditText(
     val fieldValue = remember { mutableStateOf(inputWrapper.value) }
     OutlinedTextField(
         value = fieldValue.value,
-        onValueChange = { fieldValue.value = it },
+        onValueChange = {
+            val value = InputValidator.getFilteredInput(it)
+            fieldValue.value = value
+            onValueChange(value)
+        },
         modifier = modifier,
         label = {
             Text(
