@@ -30,6 +30,8 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
     val sellPrices by viewModel.sellPrice.collectAsState()
     val buyCommission by viewModel.buyCommission.collectAsState()
     val sellCommission by viewModel.sellCommission.collectAsState()
+    val profit by viewModel.profit.collectAsState()
+    val areInputsValid by viewModel.areInputsValid.collectAsState()
 
     Column(
         modifier = Modifier
@@ -133,8 +135,8 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
             CustomButton(
                 labelResId = R.string.calculate,
                 modifier = Modifier.weight(1f),
-                isEnable = false,
-                onClick = { },
+                isEnable = areInputsValid,
+                onClick = viewModel::calculateProfit,
             )
             Spacer(modifier = Modifier.width(16.dp))
             CustomButton(
@@ -145,6 +147,6 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
             )
         }
         Spacer(Modifier.height(16.dp))
-        ResultText(labelResId = R.string.profit, result = "12345")
+        ResultText(labelResId = R.string.profit, result = profit)
     }
 }
