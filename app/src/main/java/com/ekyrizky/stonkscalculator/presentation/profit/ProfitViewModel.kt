@@ -79,4 +79,13 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
 
         _profit.value = "${profit.toString().formatDecimal()} (${roi.formatDecimal()} %)"
     }
+
+    fun resetInput() {
+        _numberOfShares.value = InputWrapper("", null)
+        _buyPrice.value = InputWrapper("", null)
+        _sellPrice.value = InputWrapper("", null)
+        _buyCommission.value = InputWrapper("", null)
+        _sellCommission.value = InputWrapper("", null)
+        _profit.value = ""
+    }
 }

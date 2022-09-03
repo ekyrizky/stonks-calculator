@@ -143,7 +143,7 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
                 labelResId = R.string.reset,
                 modifier = Modifier.weight(1f),
                 isEnable = true,
-                onClick = { },
+                onClick = viewModel::resetInput,
             )
         }
         Spacer(Modifier.height(16.dp))

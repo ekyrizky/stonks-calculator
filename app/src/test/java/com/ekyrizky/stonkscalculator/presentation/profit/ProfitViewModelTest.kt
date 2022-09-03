@@ -81,4 +81,21 @@ class ProfitViewModelTest {
         val expectedOutput = "7,200 (14.12 %)"
         assertEquals(expectedOutput, viewModel.profit.value)
     }
+
+    @Test
+    fun `test reset input success`() {
+        viewModel.onNumberOfSharesEntered("1000")
+        viewModel.onBuyPriceEntered("50")
+        viewModel.onSellPriceEntered("60")
+        viewModel.onBuyCommissionEntered("2")
+        viewModel.onSellCommissionEntered("3")
+        viewModel.resetInput()
+
+        assertEquals(InputWrapper("", null), viewModel.numberOfShares.value)
+        assertEquals(InputWrapper("", null), viewModel.buyPrice.value)
+        assertEquals(InputWrapper("", null), viewModel.sellPrice.value)
+        assertEquals(InputWrapper("", null), viewModel.buyCommission.value)
+        assertEquals(InputWrapper("", null), viewModel.sellCommission.value)
+        assertEquals("", viewModel.profit.value)
+    }
 }
