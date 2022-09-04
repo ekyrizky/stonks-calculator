@@ -2,11 +2,16 @@ package com.ekyrizky.stonkscalculator.presentation.profit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ekyrizky.stonkscalculator.R
 import com.ekyrizky.stonkscalculator.common.InputValidator
+import com.ekyrizky.stonkscalculator.common.ScreenEvent
 import com.ekyrizky.stonkscalculator.common.formatDecimal
 import com.ekyrizky.stonkscalculator.data.wrapper.InputWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +34,9 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
 
     private val _profit = MutableStateFlow("")
     val profit = _profit.asStateFlow()
+
+    private val _events = Channel<ScreenEvent>()
+    val events = _events.receiveAsFlow()
 
     val areInputsValid = combine(
         numberOfShares,
@@ -69,6 +77,30 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
         _sellCommission.value = InputWrapper(input, errorId)
     }
 
+    fun onCalculateClick() {
+        viewModelScope.launch(Dispatchers.Default) {
+            if (areInputsValid.value) {
+                calculateProfit()
+                clearFocusAndHideKeyboard()
+            } else {
+                _events.send(ScreenEvent.ShowToast(R.string.error_empty))
+            }
+        }
+    }
+
+    fun onResetClick() {
+        viewModelScope.launch(Dispatchers.Default) {
+            resetInput()
+            clearFocusAndHideKeyboard()
+        }
+    }
+
+    fun onImeActionClick() {
+        viewModelScope.launch(Dispatchers.Default) {
+            _events.send(ScreenEvent.MoveFocus())
+        }
+    }
+
     fun calculateProfit() {
         val buyPrice = buyPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
         val sellPrice = sellPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
@@ -87,5 +119,10 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
         _buyCommission.value = InputWrapper("", null)
         _sellCommission.value = InputWrapper("", null)
         _profit.value = ""
+    }
+
+    private suspend fun clearFocusAndHideKeyboard() {
+        _events.send(ScreenEvent.ClearFocus)
+        _events.send(ScreenEvent.UpdateKeyboard(false))
     }
 }

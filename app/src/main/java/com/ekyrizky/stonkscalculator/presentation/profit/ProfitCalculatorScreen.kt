@@ -5,25 +5,37 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.ekyrizky.stonkscalculator.R
+import com.ekyrizky.stonkscalculator.common.ScreenEvent
+import com.ekyrizky.stonkscalculator.common.toast
 import com.ekyrizky.stonkscalculator.presentation.component.CustomButton
 import com.ekyrizky.stonkscalculator.presentation.component.CustomEditText
 import com.ekyrizky.stonkscalculator.presentation.component.ResultText
 import com.ekyrizky.stonkscalculator.presentation.component.ToolbarIcon
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
+
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val numberOfShares by viewModel.numberOfShares.collectAsState()
     val buyPrices by viewModel.buyPrice.collectAsState()
@@ -32,6 +44,23 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
     val sellCommission by viewModel.sellCommission.collectAsState()
     val profit by viewModel.profit.collectAsState()
     val areInputsValid by viewModel.areInputsValid.collectAsState()
+
+    val events = remember(viewModel.events, lifecycleOwner) {
+        viewModel.events.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+    }
+
+    LaunchedEffect(Unit) {
+        events.collect { event ->
+            when (event) {
+                is ScreenEvent.ShowToast -> context.toast(event.messageId)
+                is ScreenEvent.UpdateKeyboard -> {
+                    if (event.show) keyboardController?.show() else keyboardController?.hide()
+                }
+                is ScreenEvent.ClearFocus -> focusManager.clearFocus()
+                is ScreenEvent.MoveFocus -> focusManager.moveFocus(event.direction)
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -52,7 +81,7 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
                     imeAction = ImeAction.Next
                 )
             },
-            onImeKeyAction = { },
+            onImeKeyAction = viewModel::onImeActionClick,
         )
         Spacer(Modifier.height(8.dp))
         CustomEditText(
@@ -66,7 +95,7 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
                     imeAction = ImeAction.Next
                 )
             },
-            onImeKeyAction = { },
+            onImeKeyAction = viewModel::onImeActionClick,
         )
         Spacer(Modifier.height(8.dp))
         CustomEditText(
@@ -80,70 +109,65 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
                     imeAction = ImeAction.Next
                 )
             },
-            onImeKeyAction = { },
+            onImeKeyAction = viewModel::onImeActionClick,
         )
         Spacer(Modifier.height(8.dp))
-        Row {
-            CustomEditText(
-                labelResId = R.string.buy_commission,
-                inputWrapper = buyCommission,
-                onValueChange = viewModel::onBuyCommissionEntered,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                keyboardOptions = remember {
-                    KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
-                    )
-                },
-                onImeKeyAction = { },
-                trailingIcons = {
-                    Text(
-                        text = "%",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            CustomEditText(
-                labelResId = R.string.sell_commission,
-                inputWrapper = sellCommission,
-                onValueChange = viewModel::onSellCommissionEntered,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                keyboardOptions = remember {
-                    KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
-                    )
-                },
-                onImeKeyAction = { },
-                trailingIcons = {
-                    Text(
-                        text = "%",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            )
-        }
+        CustomEditText(
+            labelResId = R.string.buy_commission,
+            inputWrapper = buyCommission,
+            onValueChange = viewModel::onBuyCommissionEntered,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = remember {
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                )
+            },
+            onImeKeyAction = viewModel::onImeActionClick,
+            trailingIcons = {
+                Text(
+                    text = "%",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        )
+        Spacer(Modifier.height(8.dp))
+        CustomEditText(
+            labelResId = R.string.sell_commission,
+            inputWrapper = sellCommission,
+            onValueChange = viewModel::onSellCommissionEntered,
+            modifier = Modifier
+                .fillMaxWidth(),
+            keyboardOptions = remember {
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
+            },
+            onImeKeyAction = viewModel::onCalculateClick,
+            trailingIcons = {
+                Text(
+                    text = "%",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        )
         Spacer(Modifier.height(32.dp))
         Row {
             CustomButton(
                 labelResId = R.string.calculate,
                 modifier = Modifier.weight(1f),
                 isEnable = areInputsValid,
-                onClick = viewModel::calculateProfit,
+                onClick = viewModel::onCalculateClick,
             )
             Spacer(modifier = Modifier.width(16.dp))
             CustomButton(
                 labelResId = R.string.reset,
                 modifier = Modifier.weight(1f),
                 isEnable = true,
-                onClick = viewModel::resetInput,
+                onClick = viewModel::onResetClick,
             )
         }
         Spacer(Modifier.height(16.dp))

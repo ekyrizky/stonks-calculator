@@ -31,7 +31,7 @@ fun CustomEditText(
 ) {
     val fieldValue = remember { mutableStateOf(inputWrapper.value) }
     OutlinedTextField(
-        value = fieldValue.value,
+        value = if (inputWrapper.value.isEmpty()) "" else fieldValue.value,
         onValueChange = {
             val value = InputValidator.getFilteredInput(it)
             fieldValue.value = value
