@@ -1,5 +1,6 @@
 package com.ekyrizky.stonkscalculator.presentation.profit
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -62,115 +64,121 @@ fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
         }
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            .background(Color.White)
     ) {
-        ToolbarIcon()
-        Spacer(modifier = Modifier.height(16.dp))
-        CustomEditText(
-            labelResId = R.string.number_of_shares,
-            inputWrapper = numberOfShares,
-            onValueChange = viewModel::onNumberOfSharesEntered,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = remember {
-                KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            },
-            onImeKeyAction = viewModel::onImeActionClick,
-        )
-        Spacer(Modifier.height(8.dp))
-        CustomEditText(
-            labelResId = R.string.buy_price,
-            inputWrapper = buyPrices,
-            onValueChange = viewModel::onBuyPriceEntered,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = remember {
-                KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            },
-            onImeKeyAction = viewModel::onImeActionClick,
-        )
-        Spacer(Modifier.height(8.dp))
-        CustomEditText(
-            labelResId = R.string.sell_price,
-            inputWrapper = sellPrices,
-            onValueChange = viewModel::onSellPriceEntered,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = remember {
-                KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            },
-            onImeKeyAction = viewModel::onImeActionClick,
-        )
-        Spacer(Modifier.height(8.dp))
-        CustomEditText(
-            labelResId = R.string.buy_commission,
-            inputWrapper = buyCommission,
-            onValueChange = viewModel::onBuyCommissionEntered,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = remember {
-                KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            },
-            onImeKeyAction = viewModel::onImeActionClick,
-            trailingIcons = {
-                Text(
-                    text = "%",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        )
-        Spacer(Modifier.height(8.dp))
-        CustomEditText(
-            labelResId = R.string.sell_commission,
-            inputWrapper = sellCommission,
-            onValueChange = viewModel::onSellCommissionEntered,
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            keyboardOptions = remember {
-                KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            ToolbarIcon()
+            Spacer(modifier = Modifier.height(16.dp))
+            CustomEditText(
+                labelResId = R.string.number_of_shares,
+                inputWrapper = numberOfShares,
+                onValueChange = viewModel::onNumberOfSharesEntered,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = remember {
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
+                },
+                onImeKeyAction = viewModel::onImeActionClick,
+            )
+            Spacer(Modifier.height(8.dp))
+            CustomEditText(
+                labelResId = R.string.buy_price,
+                inputWrapper = buyPrices,
+                onValueChange = viewModel::onBuyPriceEntered,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = remember {
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
+                },
+                onImeKeyAction = viewModel::onImeActionClick,
+            )
+            Spacer(Modifier.height(8.dp))
+            CustomEditText(
+                labelResId = R.string.sell_price,
+                inputWrapper = sellPrices,
+                onValueChange = viewModel::onSellPriceEntered,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = remember {
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
+                },
+                onImeKeyAction = viewModel::onImeActionClick,
+            )
+            Spacer(Modifier.height(8.dp))
+            CustomEditText(
+                labelResId = R.string.buy_commission,
+                inputWrapper = buyCommission,
+                onValueChange = viewModel::onBuyCommissionEntered,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = remember {
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
+                },
+                onImeKeyAction = viewModel::onImeActionClick,
+                trailingIcons = {
+                    Text(
+                        text = "%",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            )
+            Spacer(Modifier.height(8.dp))
+            CustomEditText(
+                labelResId = R.string.sell_commission,
+                inputWrapper = sellCommission,
+                onValueChange = viewModel::onSellCommissionEntered,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                keyboardOptions = remember {
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    )
+                },
+                onImeKeyAction = viewModel::onCalculateClick,
+                trailingIcons = {
+                    Text(
+                        text = "%",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            )
+            Spacer(Modifier.height(32.dp))
+            Row {
+                CustomButton(
+                    labelResId = R.string.calculate,
+                    modifier = Modifier.weight(1f),
+                    isEnable = areInputsValid,
+                    onClick = viewModel::onCalculateClick,
                 )
-            },
-            onImeKeyAction = viewModel::onCalculateClick,
-            trailingIcons = {
-                Text(
-                    text = "%",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                Spacer(modifier = Modifier.width(16.dp))
+                CustomButton(
+                    labelResId = R.string.reset,
+                    modifier = Modifier.weight(1f),
+                    isEnable = true,
+                    onClick = viewModel::onResetClick,
                 )
             }
-        )
-        Spacer(Modifier.height(32.dp))
-        Row {
-            CustomButton(
-                labelResId = R.string.calculate,
-                modifier = Modifier.weight(1f),
-                isEnable = areInputsValid,
-                onClick = viewModel::onCalculateClick,
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            CustomButton(
-                labelResId = R.string.reset,
-                modifier = Modifier.weight(1f),
-                isEnable = true,
-                onClick = viewModel::onResetClick,
-            )
+            Spacer(Modifier.height(16.dp))
+            ResultText(labelResId = R.string.profit, result = profit)
         }
-        Spacer(Modifier.height(16.dp))
-        ResultText(labelResId = R.string.profit, result = profit)
     }
 }

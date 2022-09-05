@@ -13,9 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ekyrizky.stonkscalculator.common.InputValidator
 import com.ekyrizky.stonkscalculator.data.wrapper.InputWrapper
 
@@ -41,8 +39,7 @@ fun CustomEditText(
         label = {
             Text(
                 text = stringResource(labelResId),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.body1
             )
         },
         trailingIcon = trailingIcons,
@@ -60,7 +57,7 @@ fun CustomEditText(
     if (inputWrapper.errorId != null) {
         Text(
             text = stringResource(inputWrapper.errorId),
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = 8.dp, top = 4.dp),
             color = MaterialTheme.colors.error,
             style = MaterialTheme.typography.caption,
         )

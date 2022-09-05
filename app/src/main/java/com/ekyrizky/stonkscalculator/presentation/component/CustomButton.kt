@@ -2,6 +2,7 @@ package com.ekyrizky.stonkscalculator.presentation.component
 
 import androidx.annotation.StringRes
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,6 @@ fun CustomButton(
     onClick: () -> Unit,
 ) {
     Button(onClick = onClick, modifier = modifier, enabled = isEnable) {
-        Text(text = stringResource(labelResId))
+        Text(text = stringResource(labelResId), style = MaterialTheme.typography.body1)
     }
 }
