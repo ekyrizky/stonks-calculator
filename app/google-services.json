@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "854245174520",
+    "project_id": "stonks-calculator-c57c3",
+    "storage_bucket": "stonks-calculator-c57c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854245174520:android:b978edc969978a0a501f0d",
+        "android_client_info": {
+          "package_name": "com.ekyrizky.stonkscalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854245174520-7591b7eepi3fbesa1gp3d3u2ft5ancv1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ekyrizky.stonkscalculator",
+            "certificate_hash": "bddbb69a63e896642e26423a69ecfb796ee043a7"
+          }
+        },
+        {
+          "client_id": "854245174520-sigv04tknsgupfa2lfh79b0p5dh6nhfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC1uRyGfN5lPomrqi_j1kXPUiI2rkOEa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854245174520-sigv04tknsgupfa2lfh79b0p5dh6nhfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
