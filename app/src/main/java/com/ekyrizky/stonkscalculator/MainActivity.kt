@@ -3,41 +3,26 @@ package com.ekyrizky.stonkscalculator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.ekyrizky.stonkscalculator.ui.theme.StonksCalculatorTheme
+import com.ekyrizky.stonkscalculator.presentation.profit.ProfitCalculatorScreen
+import com.ekyrizky.stonkscalculator.presentation.ui.theme.StonksCalculatorTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StonksCalculatorTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                ProfitCalculatorScreen()
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     StonksCalculatorTheme {
-        Greeting("Android")
+        ProfitCalculatorScreen()
     }
 }

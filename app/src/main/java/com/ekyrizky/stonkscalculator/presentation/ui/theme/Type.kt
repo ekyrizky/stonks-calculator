@@ -1,4 +1,4 @@
-package com.ekyrizky.stonkscalculator.ui.theme
+package com.ekyrizky.stonkscalculator.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -10,8 +10,9 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp,
+        letterSpacing = 1.sp
     )
     /* Other default text styles to override
     button = TextStyle(
