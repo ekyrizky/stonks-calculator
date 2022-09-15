@@ -1,4 +1,5 @@
 # Stonks Calculator
+[![Android CI](https://github.com/ekyrizky/stonks-calculator/actions/workflows/android_ci.yml/badge.svg)](https://github.com/ekyrizky/stonks-calculator/actions/workflows/android_ci.yml)
 
 ### Feature
 * calculate stocks profit/loss
