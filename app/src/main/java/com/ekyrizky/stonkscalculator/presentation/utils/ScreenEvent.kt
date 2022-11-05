@@ -1,4 +1,4 @@
-package com.ekyrizky.stonkscalculator.common
+package com.ekyrizky.stonkscalculator.presentation.utils
 
 import androidx.compose.ui.focus.FocusDirection
 

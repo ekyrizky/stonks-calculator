@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ekyrizky.stonkscalculator.R
 import com.ekyrizky.stonkscalculator.common.InputValidator
-import com.ekyrizky.stonkscalculator.common.ScreenEvent
 import com.ekyrizky.stonkscalculator.common.formatDecimal
 import com.ekyrizky.stonkscalculator.data.wrapper.InputWrapper
+import com.ekyrizky.stonkscalculator.presentation.utils.ScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

@@ -23,16 +23,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.ekyrizky.stonkscalculator.R
-import com.ekyrizky.stonkscalculator.common.ScreenEvent
 import com.ekyrizky.stonkscalculator.common.toast
 import com.ekyrizky.stonkscalculator.presentation.component.CustomButton
 import com.ekyrizky.stonkscalculator.presentation.component.CustomEditText
 import com.ekyrizky.stonkscalculator.presentation.component.ResultText
 import com.ekyrizky.stonkscalculator.presentation.component.ToolbarIcon
+import com.ekyrizky.stonkscalculator.presentation.utils.ScreenEvent
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ProfitCalculatorScreen(viewModel: ProfitViewModel = hiltViewModel()) {
+fun ProfitScreen(viewModel: ProfitViewModel = hiltViewModel()) {
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
