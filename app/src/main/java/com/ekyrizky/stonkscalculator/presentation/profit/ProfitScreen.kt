@@ -17,11 +17,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.ekyrizky.stonkscalculator.R
 import com.ekyrizky.stonkscalculator.common.ScreenType
 import com.ekyrizky.stonkscalculator.common.toast
@@ -30,7 +33,10 @@ import com.ekyrizky.stonkscalculator.presentation.utils.ScreenEvent
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ProfitScreen(viewModel: ProfitViewModel = hiltViewModel()) {
+fun ProfitScreen(
+    navController: NavController,
+    viewModel: ProfitViewModel = hiltViewModel()
+) {
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -44,7 +50,6 @@ fun ProfitScreen(viewModel: ProfitViewModel = hiltViewModel()) {
     val sellCommission by viewModel.sellCommission.collectAsState()
     val profit by viewModel.profit.collectAsState()
     val areInputsValid by viewModel.areInputsValid.collectAsState()
-    val dropDownItem = listOf(ScreenType.profit, ScreenType.average)
 
     val events = remember(viewModel.events, lifecycleOwner) {
         viewModel.events.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
@@ -76,10 +81,10 @@ fun ProfitScreen(viewModel: ProfitViewModel = hiltViewModel()) {
         ) {
             ToolbarIcon()
             Spacer(modifier = Modifier.height(16.dp))
-            CustomSpinner(
-                items = dropDownItem,
+            ScreenDropDown(
+                items = ScreenType.screens,
                 modifier = Modifier.fillMaxWidth()
-            ) { }
+            ) { navController.navigate(it) }
             Spacer(modifier = Modifier.height(16.dp))
             CustomEditText(
                 labelResId = R.string.number_of_shares,
@@ -185,4 +190,10 @@ fun ProfitScreen(viewModel: ProfitViewModel = hiltViewModel()) {
             ResultText(labelResId = R.string.profit, result = profit)
         }
     }
+}
+
+@Preview
+@Composable
+fun ComposablePreview() {
+    ProfitScreen(rememberNavController())
 }

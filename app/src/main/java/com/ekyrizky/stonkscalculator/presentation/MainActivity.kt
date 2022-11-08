@@ -3,8 +3,6 @@ package com.ekyrizky.stonkscalculator.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,21 +24,13 @@ class MainActivity : ComponentActivity() {
                     startDestination = Screen.ProfitScreen.route,
                 ) {
                     composable(route = Screen.ProfitScreen.route) {
-                        ProfitScreen()
+                        ProfitScreen(navController)
                     }
                     composable(route = Screen.AverageScreen.route) {
-                        AverageScreen()
+                        AverageScreen(navController)
                     }
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    StonksCalculatorTheme {
-        ProfitScreen()
     }
 }

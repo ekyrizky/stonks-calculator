@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomSpinner(
+fun ScreenDropDown(
     items: List<String>,
     modifier: Modifier = Modifier,
     onClick: (value: String) -> Unit
