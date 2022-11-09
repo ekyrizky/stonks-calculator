@@ -96,14 +96,12 @@ class AverageViewModel @Inject constructor() : ViewModel() {
     }
 
     fun calculateTotalShares() {
-        _totalShares.value =
-            "${numberOfShares.value.value.toDouble() + newNumberOfShares.value.value.toDouble()}"
+        _totalShares.value = "${numberOfShares.value.value.toInt() + newNumberOfShares.value.value.toInt()}"
     }
 
     fun calculateAverageCost() {
         val sharesOwned = buyPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
-        val newShares =
-            newBuyPrice.value.value.toDouble() * newNumberOfShares.value.value.toDouble()
+        val newShares = newBuyPrice.value.value.toDouble() * newNumberOfShares.value.value.toDouble()
         val averageCost = (sharesOwned + newShares) / totalShares.value.toDouble()
         _averageCost.value = averageCost.toString().formatDecimal()
     }
