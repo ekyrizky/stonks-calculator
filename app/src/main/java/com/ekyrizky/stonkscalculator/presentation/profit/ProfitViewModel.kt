@@ -125,4 +125,10 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
         _events.send(ScreenEvent.ClearFocus)
         _events.send(ScreenEvent.UpdateKeyboard(false))
     }
+
+    fun onDropDownClick(screen: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            _events.send(ScreenEvent.ChangeScreen(screen))
+        }
+    }
 }

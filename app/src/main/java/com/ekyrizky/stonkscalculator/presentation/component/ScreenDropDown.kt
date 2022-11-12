@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ScreenDropDown(
     items: List<String>,
+    selectedItem: String,
     modifier: Modifier = Modifier,
     onClick: (value: String) -> Unit
 ) {
-    var dropDownText by remember { mutableStateOf(items[0]) }
+    var dropDownText by remember { mutableStateOf(selectedItem) }
     var expanded by remember { mutableStateOf(false) }
     Box(modifier, contentAlignment = Alignment.Center) {
         Row(

@@ -61,6 +61,7 @@ fun AverageScreen(
                 }
                 is ScreenEvent.ClearFocus -> focusManager.clearFocus()
                 is ScreenEvent.MoveFocus -> focusManager.moveFocus(event.direction)
+                is ScreenEvent.ChangeScreen -> navController.navigate(event.screen)
             }
         }
     }
@@ -80,8 +81,10 @@ fun AverageScreen(
             Spacer(modifier = Modifier.height(16.dp))
             ScreenDropDown(
                 items = ScreenType.screens,
-                modifier = Modifier.fillMaxWidth()
-            ) { navController.navigate(it) }
+                selectedItem = ScreenType.average,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = viewModel::onDropDownClick
+            )
             Spacer(modifier = Modifier.height(16.dp))
             CustomEditText(
                 labelResId = R.string.number_of_shares,
