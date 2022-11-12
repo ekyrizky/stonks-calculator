@@ -1,4 +1,4 @@
-package com.ekyrizky.stonkscalculator.presentation.profit
+package com.ekyrizky.stonkscalculator.presentation.average
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfitViewModel @Inject constructor() : ViewModel() {
+class AverageViewModel @Inject constructor() : ViewModel() {
 
     private val _numberOfShares = MutableStateFlow(InputWrapper())
     val numberOfShares = _numberOfShares.asStateFlow()
@@ -23,17 +23,17 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
     private val _buyPrice = MutableStateFlow(InputWrapper())
     val buyPrice = _buyPrice.asStateFlow()
 
-    private val _sellPrice = MutableStateFlow(InputWrapper())
-    val sellPrice = _sellPrice.asStateFlow()
+    private val _newNumberOfShares = MutableStateFlow(InputWrapper())
+    val newNumberOfShares = _newNumberOfShares.asStateFlow()
 
-    private val _buyCommission = MutableStateFlow(InputWrapper())
-    val buyCommission = _buyCommission.asStateFlow()
+    private val _newBuyPrice = MutableStateFlow(InputWrapper())
+    val newBuyPrice = _newBuyPrice.asStateFlow()
 
-    private val _sellCommission = MutableStateFlow(InputWrapper())
-    val sellCommission = _sellCommission.asStateFlow()
+    private val _totalShares = MutableStateFlow("")
+    val totalShares = _totalShares.asStateFlow()
 
-    private val _profit = MutableStateFlow("")
-    val profit = _profit.asStateFlow()
+    private val _averageCost = MutableStateFlow("")
+    val averageCost = _averageCost.asStateFlow()
 
     private val _events = Channel<ScreenEvent>()
     val events = _events.receiveAsFlow()
@@ -41,15 +41,13 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
     val areInputsValid = combine(
         numberOfShares,
         buyPrice,
-        sellPrice,
-        buyCommission,
-        sellCommission
-    ) { numberOfShares, buyPrice, sellPrice, buyCommission, sellCommission ->
+        newNumberOfShares,
+        newBuyPrice
+    ) { numberOfShares, buyPrice, newNumberOfShares, newBuyPrice ->
         numberOfShares.value.isNotEmpty() && numberOfShares.errorId == null
                 && buyPrice.value.isNotEmpty() && buyPrice.errorId == null
-                && sellPrice.value.isNotEmpty() && sellPrice.errorId == null
-                && buyCommission.value.isNotEmpty() && buyCommission.errorId == null
-                && sellCommission.value.isNotEmpty() && sellCommission.errorId == null
+                && newNumberOfShares.value.isNotEmpty() && newNumberOfShares.errorId == null
+                && newBuyPrice.value.isNotEmpty() && newBuyPrice.errorId == null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
     fun onNumberOfSharesEntered(input: String) {
@@ -62,25 +60,21 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
         _buyPrice.value = InputWrapper(input, errorId)
     }
 
-    fun onSellPriceEntered(input: String) {
+    fun onNewNumberOfSharesEntered(input: String) {
         val errorId = InputValidator.getInputErrorOrNull(input)
-        _sellPrice.value = InputWrapper(input, errorId)
+        _newNumberOfShares.value = InputWrapper(input, errorId)
     }
 
-    fun onBuyCommissionEntered(input: String) {
+    fun onNewBuyPriceEntered(input: String) {
         val errorId = InputValidator.getInputErrorOrNull(input)
-        _buyCommission.value = InputWrapper(input, errorId)
-    }
-
-    fun onSellCommissionEntered(input: String) {
-        val errorId = InputValidator.getInputErrorOrNull(input)
-        _sellCommission.value = InputWrapper(input, errorId)
+        _newBuyPrice.value = InputWrapper(input, errorId)
     }
 
     fun onCalculateClick() {
         viewModelScope.launch(Dispatchers.Default) {
             if (areInputsValid.value) {
-                calculateProfit()
+                calculateTotalShares()
+                calculateAverageCost()
                 clearFocusAndHideKeyboard()
             } else {
                 _events.send(ScreenEvent.ShowToast(R.string.error_empty))
@@ -101,24 +95,24 @@ class ProfitViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun calculateProfit() {
-        val buyPrice = buyPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
-        val sellPrice = sellPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
-        val netBuy = buyPrice + (buyPrice * buyCommission.value.value.toDouble() / 100)
-        val netSell = sellPrice - (sellPrice * sellCommission.value.value.toDouble() / 100)
-        val profit = netSell - netBuy
-        val roi = (profit / netBuy * 100).toString()
+    fun calculateTotalShares() {
+        _totalShares.value = "${numberOfShares.value.value.toInt() + newNumberOfShares.value.value.toInt()}"
+    }
 
-        _profit.value = "${profit.toString().formatDecimal()} (${roi.formatDecimal()} %)"
+    fun calculateAverageCost() {
+        val sharesOwned = buyPrice.value.value.toDouble() * numberOfShares.value.value.toDouble()
+        val newShares = newBuyPrice.value.value.toDouble() * newNumberOfShares.value.value.toDouble()
+        val averageCost = (sharesOwned + newShares) / totalShares.value.toDouble()
+        _averageCost.value = averageCost.toString().formatDecimal()
     }
 
     fun resetInput() {
         _numberOfShares.value = InputWrapper("", null)
         _buyPrice.value = InputWrapper("", null)
-        _sellPrice.value = InputWrapper("", null)
-        _buyCommission.value = InputWrapper("", null)
-        _sellCommission.value = InputWrapper("", null)
-        _profit.value = ""
+        _newNumberOfShares.value = InputWrapper("", null)
+        _newBuyPrice.value = InputWrapper("", null)
+        _totalShares.value = ""
+        _averageCost.value = ""
     }
 
     private suspend fun clearFocusAndHideKeyboard() {
