@@ -6,6 +6,8 @@
 
 ### Feature
 * calculate stocks profit/loss
+* calculate stocks average
+
 
 ### Screenshoot
 <p float="left">
