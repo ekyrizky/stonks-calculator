@@ -1,6 +1,9 @@
 # Stonks Calculator
 [![Android CI](https://github.com/ekyrizky/stonks-calculator/actions/workflows/android_ci.yml/badge.svg)](https://github.com/ekyrizky/stonks-calculator/actions/workflows/android_ci.yml)
 
+[<img src="https://user-images.githubusercontent.com/27962017/213212633-ff37d46c-039a-48e6-bef2-cf013eb3d3c7.png" width="150">](https://play.google.com/store/apps/details?id=com.ekyrizky.stonkscalculator&hl=en)
+
+
 ### Feature
 * calculate stocks profit/loss
 
